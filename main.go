@@ -33,17 +33,17 @@ func searchRecursively(path string, s string) {
 	files := getAllFiles(path)
 	if files != nil {
 		for path, ext := range getAllFiles(path) {
-			fmt.Printf("searching %s...\n", path)
+			//fmt.Printf("searching %s...\n", path)
 			switch ext {
 			case ".pdf":
 				if found, _ := searchPDF(path, s); found {
-					fmt.Printf("FOUND! %s\nFOUND! %s\nFOUND! %s\n", path, path, path)
+					fmt.Printf("FOUND! %s\n", path)
 				}
 				break
 
 			case ".docx":
 				if found, _ := searchDocx(path, s); found {
-					fmt.Printf("FOUND! %s\nFOUND! %s\nFOUND! %s\n", path, path, path)
+					fmt.Printf("FOUND! %s\n", path)
 				}
 				break
 
@@ -83,7 +83,7 @@ func isDirectoryExists(path string) (bool, error) {
 
 func printError() {
 	err := recover()
-	if err != nil {
+	if err != nil && fmt.Sprint(err) != "malformed PDF: reading at offset 0: stream not present" {
 		fmt.Println(err)
 	}
 }
@@ -153,25 +153,5 @@ func searchDocx(path string, s string) (bool, error) {
 			continue
 		}
 	}
-
-	// for pageIndex := 1; pageIndex <= totalPage; pageIndex++ {
-	// 	p := r.Page(pageIndex)
-	// 	if p.V.IsNull() {
-	// 		continue
-	// 	}
-	// 	content := p.Content()
-	// 	var textBuilder bytes.Buffer
-	// 	defer textBuilder.Reset()
-	// 	if content.Text != nil {
-	// 		for _, t := range content.Text {
-	// 			textBuilder.WriteString(t.S)
-	// 		}
-	// 	}
-	// 	str := textBuilder.String()
-	// 	if strings.Contains(str, s) {
-	// 		return true, nil
-	// 	}
-
-	// }
 	return false, nil
 }
